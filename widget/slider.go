@@ -78,8 +78,8 @@ func (s *Slider) Bind(data binding.Float) {
 func (s *Slider) DragEnd() {
 }
 
-// Dragged function.
-func (s *Slider) Dragged(e *fyne.DragEvent) {
+// Dragged function. Returns 0 if not changed, else returns a value
+func (s *Slider) Dragged(e *fyne.DragEvent) float64 {
 	ratio := s.getRatio(&(e.PointEvent))
 
 	lastValue := s.Value
@@ -87,7 +87,7 @@ func (s *Slider) Dragged(e *fyne.DragEvent) {
 	s.updateValue(ratio)
 
 	if s.almostEqual(lastValue, s.Value) {
-		return
+		return 0
 	}
 
 	s.Refresh()
@@ -95,6 +95,7 @@ func (s *Slider) Dragged(e *fyne.DragEvent) {
 	if s.OnChanged != nil {
 		s.OnChanged(s.Value)
 	}
+	return ratio
 }
 
 func (s *Slider) buttonDiameter() float32 {
